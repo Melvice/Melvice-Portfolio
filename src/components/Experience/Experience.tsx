@@ -1,62 +1,77 @@
+import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import ChapterHeader from '../ChapterHeader/ChapterHeader';
 import './Experience.css';
 
+const VP = { once: true, margin: '-60px' };
+
 export default function Experience() {
-  const { t } = useLanguage();
-  const sectionRef = useScrollAnimation() as React.RefObject<HTMLElement>;
+  const { t, lang } = useLanguage();
+  const title = lang === 'fr' ? 'LE PARCOURS' : 'THE JOURNEY';
 
   return (
-    <section className="section" id="experience" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <section className="section experience-section" id="experience">
       <div className="container">
-        <div className="section-header">
-          <span className="section-label animate-in">{t.experience.label}</span>
-          <h2 className="section-title animate-in delay-1">
-            {t.experience.title}<span>{t.experience.titleHighlight}</span>
-          </h2>
-        </div>
+        <ChapterHeader number="04" title={title} italic />
 
-        <div className="timeline">
+        <div className="exp-list">
           {t.experience.jobs.map((job, i) => (
-            <div key={`${job.company}-${i}`} className={`timeline-item animate-in delay-${i + 1}`}>
-              <div className="timeline-line">
-                <div className={`timeline-dot ${job.current ? 'current' : ''}`}>
-                  {job.current && <span className="dot-ping" />}
-                </div>
-              </div>
+            <motion.div
+              key={`${job.company}-${i}`}
+              className="exp-item"
+              initial={{ opacity: 0, y: 36 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VP}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+            >
+              {/* Index */}
+              <span className="exp-idx" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
 
-              <div className="timeline-card">
-                <div className="timeline-header">
-                  <div>
-                    <h3 className="timeline-role">{job.role}</h3>
-                    <div className="timeline-meta">
-                      <span className="timeline-company">{job.company}</span>
-                      <span className="timeline-separator">·</span>
-                      <span className="timeline-location">{job.location}</span>
+              <div className="exp-body">
+                {/* Header */}
+                <div className="exp-header">
+                  <div className="exp-left-block">
+                    <div className="exp-role-row">
+                      <h3 className="exp-role">{job.role}</h3>
+                      {job.current && (
+                        <span className="now-badge">
+                          <span className="now-dot" />
+                          Now
+                        </span>
+                      )}
+                    </div>
+                    <div className="exp-meta">
+                      <span className="exp-company">{job.company}</span>
+                      <span className="exp-sep">·</span>
+                      <span className="exp-location">{job.location}</span>
                     </div>
                   </div>
-                  <div className="timeline-right">
-                    <span className="timeline-period">{job.period}</span>
-                    <span className={`timeline-type ${job.typeClass}`}>{job.type}</span>
+                  <div className="exp-right-block">
+                    <span className="exp-period">{job.period}</span>
+                    <span className={`exp-type ${job.typeClass}`}>{job.type}</span>
                   </div>
                 </div>
 
-                <ul className="timeline-bullets">
+                {/* Bullets */}
+                <ul className="exp-bullets">
                   {job.bullets.map((b, j) => (
                     <li key={j}>
-                      <span className="bullet-icon">→</span>
+                      <span className="b-arrow" aria-hidden="true">→</span>
                       <span>{b}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="timeline-tech">
-                  {job.tech.map((tech) => (
+                {/* Tech */}
+                <div className="exp-tech">
+                  {job.tech.map(tech => (
                     <span key={tech} className="tag">{tech}</span>
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

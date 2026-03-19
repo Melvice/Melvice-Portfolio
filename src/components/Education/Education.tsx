@@ -1,80 +1,120 @@
+import { motion } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import ChapterHeader from '../ChapterHeader/ChapterHeader';
 import './Education.css';
 
+const VP = { once: true, margin: '-60px' };
+
 export default function Education() {
-  const { t } = useLanguage();
-  const sectionRef = useScrollAnimation() as React.RefObject<HTMLElement>;
+  const { t, lang } = useLanguage();
   const edu = t.education;
+  const title = lang === 'fr' ? 'LA FORMATION' : 'THE FOUNDATION';
 
   return (
-    <section className="section" id="education" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <section className="section education-section" id="education">
       <div className="container">
-        <div className="section-header">
-          <span className="section-label animate-in">{edu.label}</span>
-          <h2 className="section-title animate-in delay-1">
-            {edu.title}<span>{edu.titleHighlight}</span>
-          </h2>
-        </div>
+        <ChapterHeader number="06" title={title} />
 
         <div className="edu-layout">
-          <div className="edu-left">
-            <div className="edu-card animate-in">
-              <div className="edu-icon">🎓</div>
-              <div>
-                <h3 className="edu-degree">{edu.degree}</h3>
-                <p className="edu-school">{edu.school}</p>
-                <p className="edu-period">{edu.period}</p>
-                <ul className="edu-highlights">
-                  {edu.highlights.map((h, i) => (
-                    <li key={i}>
-                      <span className="highlight-dot" />
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
 
-            <div className="languages-card animate-in delay-1">
-              <h3 className="lang-title">{edu.langTitle}</h3>
-              <div className="languages">
-                {edu.languages.map((lang) => (
+          {/* Left column — degree + languages */}
+          <div className="edu-left">
+
+            {/* Degree card */}
+            <motion.div
+              className="edu-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VP}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="edu-card-top">
+                <span className="edu-period">{edu.period}</span>
+                <span className="edu-school-badge">{edu.school}</span>
+              </div>
+              <h3 className="edu-degree">{edu.degree}</h3>
+              <ul className="edu-highlights">
+                {edu.highlights.map((h, i) => (
+                  <li key={i}>
+                    <span className="b-arrow" aria-hidden="true">→</span>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Languages */}
+            <motion.div
+              className="languages-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={VP}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <span className="lang-card-label">{edu.langTitle}</span>
+              <div className="languages-list">
+                {edu.languages.map(lang => (
                   <div key={lang.name} className="lang-item">
-                    <div className="lang-header">
-                      <div className="lang-name">
-                        <span>{lang.flag}</span>
-                        <span>{lang.name}</span>
-                      </div>
+                    <div className="lang-row">
+                      <span className="lang-name">
+                        <span className="lang-code" aria-hidden="true">
+                          {lang.flag === '🇫🇷' ? 'FR' : 'EN'}
+                        </span>
+                        {lang.name}
+                      </span>
                       <span className="lang-level">{lang.level}</span>
                     </div>
                     <div className="lang-track">
-                      <div
+                      <motion.div
                         className="lang-fill"
-                        style={{ '--target': `${lang.pct}%` } as React.CSSProperties}
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${lang.pct}%` }}
+                        viewport={VP}
+                        transition={{ duration: 1.2, delay: 0.5 }}
                       />
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
+
           </div>
 
-          <div className="distinctions-col">
-            <span className="section-label animate-in">{edu.distinctionsTitle}</span>
+          {/* Right column — distinctions */}
+          <div className="edu-right">
+            <motion.span
+              className="edu-right-label"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={VP}
+              transition={{ duration: 0.5 }}
+            >
+              {edu.distinctionsTitle}
+            </motion.span>
+
             <div className="distinctions-list">
               {edu.distinctions.map((d, i) => (
-                <div key={i} className={`distinction-card animate-in delay-${i + 1}`}>
-                  <span className="distinction-icon">{d.icon}</span>
-                  <div>
-                    <h4 className="distinction-title">{d.title}</h4>
-                    <p className="distinction-subtitle">{d.subtitle}</p>
-                    <p className="distinction-desc">{d.description}</p>
+                <motion.div
+                  key={i}
+                  className="distinction-card"
+                  initial={{ opacity: 0, x: 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={VP}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                >
+                  <div className="d-num" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
                   </div>
-                </div>
+                  <div className="d-body">
+                    <h4 className="d-title">{d.title}</h4>
+                    <p className="d-sub">{d.subtitle}</p>
+                    <p className="d-desc">{d.description}</p>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>

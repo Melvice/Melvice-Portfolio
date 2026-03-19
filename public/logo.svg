@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 46 46" fill="none">
+  <!-- Background -->
+  <rect width="46" height="46" fill="#F7F5F1"/>
+
+  <!-- Editorial frame -->
+  <rect x="2" y="2" width="42" height="42" stroke="#0F0E0D" stroke-width="1"/>
+
+  <!-- M — large bold italic serif -->
+  <text
+    x="5"
+    y="34"
+    font-family="Garamond, 'Cormorant Garamond', Georgia, serif"
+    font-size="30"
+    font-weight="700"
+    font-style="italic"
+    fill="#0F0E0D"
+  >M</text>
+
+  <!-- J — small mono top right -->
+  <text
+    x="30"
+    y="22"
+    font-family="'Courier New', Courier, monospace"
+    font-size="9"
+    font-weight="500"
+    fill="#0F0E0D"
+    opacity="0.6"
+  >J</text>
+
+  <!-- G — small mono bottom right -->
+  <text
+    x="30"
+    y="33"
+    font-family="'Courier New', Courier, monospace"
+    font-size="9"
+    font-weight="500"
+    fill="#0F0E0D"
+    opacity="0.6"
+  >G</text>
+
+  <!-- Vertical divider -->
+  <line x1="27" y1="7" x2="27" y2="39" stroke="#0F0E0D" stroke-width="0.6" opacity="0.2"/>
+
+  <!-- Orange accent square -->
+  <rect x="36" y="32" width="5" height="5" fill="#FF6B35"/>
+</svg>

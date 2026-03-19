@@ -1,0 +1,50 @@
+.chapter-header {
+  margin-bottom: 72px;
+}
+
+/* ── Number + rule row ── */
+.chapter-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.chapter-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.chapter-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+  display: block;
+}
+
+/* ── Display title ── */
+.chapter-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.6rem, 8vw, 7.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 0.88;
+  color: var(--text-primary);
+}
+
+.chapter-title.italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+@media (max-width: 640px) {
+  .chapter-title {
+    font-size: clamp(2.8rem, 12vw, 4rem);
+    line-height: 0.92;
+  }
+  .chapter-header { margin-bottom: 48px; }
+}

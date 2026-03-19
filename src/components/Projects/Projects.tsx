@@ -1,100 +1,103 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import ChapterHeader from '../ChapterHeader/ChapterHeader';
 import './Projects.css';
 
-export default function Projects() {
-  const { t } = useLanguage();
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const sectionRef = useScrollAnimation() as React.RefObject<HTMLElement>;
+const VP = { once: true, margin: '-60px' };
 
-  // null = "all"
+export default function Projects() {
+  const { t, lang } = useLanguage();
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const title = lang === 'fr' ? 'LES PROJETS' : 'THE WORK';
+
   const filtered = activeFilter === null
     ? t.projects.items
-    : t.projects.items.filter((p) => p.category === activeFilter);
-
-  const handleFilter = (value: string | null) => {
-    setActiveFilter(value);
-  };
+    : t.projects.items.filter(p => p.category === activeFilter);
 
   return (
-    <section className="section" id="projects" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <section className="section projects-section" id="projects">
       <div className="container">
-        <div className="section-header">
-          <span className="section-label animate-in">{t.projects.label}</span>
-          <h2 className="section-title animate-in delay-1">
-            {t.projects.title}<span>{t.projects.titleHighlight}</span>
-          </h2>
-        </div>
+        <div className="projects-top">
+          <ChapterHeader number="05" title={title} />
 
-        <div className="project-filters animate-in delay-2">
-          <button
-            className={`filter-btn ${activeFilter === null ? 'active' : ''}`}
-            onClick={() => handleFilter(null)}
+          <motion.div
+            className="filter-row"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={VP}
+            transition={{ duration: 0.5 }}
           >
-            {t.projects.filterAll}
-          </button>
-          {t.projects.filters.map((f) => (
             <button
-              key={f}
-              className={`filter-btn ${activeFilter === f ? 'active' : ''}`}
-              onClick={() => handleFilter(f)}
+              className={`filter-btn${activeFilter === null ? ' active' : ''}`}
+              onClick={() => setActiveFilter(null)}
             >
-              {f}
+              {t.projects.filterAll}
             </button>
-          ))}
+            {t.projects.filters.map(f => (
+              <button
+                key={f}
+                className={`filter-btn${activeFilter === f ? ' active' : ''}`}
+                onClick={() => setActiveFilter(f)}
+              >
+                {f}
+              </button>
+            ))}
+          </motion.div>
         </div>
 
-        {/* key on grid forces re-mount on filter change, triggering CSS animations */}
-        <div className="projects-grid" key={`${activeFilter ?? 'all'}-${t.projects.label}`}>
-          {filtered.map((project, i) => (
-            <div
-              key={project.id}
-              className={`project-card ${project.featured ? 'featured' : ''}`}
-              style={{
-                '--project-accent': project.accent,
-                animationDelay: `${i * 0.07}s`,
-              } as React.CSSProperties}
-            >
-              <div className="project-card-inner">
-                <div className="project-top">
-                  <div className="project-icon-wrap">
-                    <span className="project-icon">{project.icon}</span>
+        {/* Editorial index list */}
+        <div className="projects-list">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project, i) => (
+              <motion.article
+                key={project.id}
+                className={`project-row${project.featured ? ' featured' : ''}`}
+                style={{ '--project-accent': project.accent } as React.CSSProperties}
+                layout
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+              >
+                {/* Left accent line — visible on hover */}
+                <span className="row-accent-line" aria-hidden="true" />
+
+                {/* Number */}
+                <span className="row-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+
+                {/* Main content */}
+                <div className="row-body">
+                  <div className="row-head">
+                    <h3 className="row-title">{project.title}</h3>
+                    <div className="row-badges">
+                      <span className="row-cat">{project.category}</span>
+                      {project.featured && (
+                        <span className="row-featured">Featured</span>
+                      )}
+                    </div>
                   </div>
+
+                  <p className="row-subtitle">{project.subtitle}</p>
+
                   {project.featured && (
-                    <span className="featured-badge">{t.projects.featuredLabel}</span>
+                    <p className="row-problem">{project.problem}</p>
                   )}
-                </div>
 
-                <div className="project-category-badge">{project.category}</div>
-                <h3 className="project-title">{project.title}</h3>
-                <p className="project-subtitle">{project.subtitle}</p>
-
-                <div className="project-problem">
-                  <span className="problem-label">{t.projects.problemLabel}</span>
-                  <p>{project.problem}</p>
-                </div>
-
-                <div className="project-learned">
-                  <span className="learned-label">{t.projects.learnedLabel}</span>
-                  <ul>
-                    {project.learned.map((item, j) => (
-                      <li key={j}>
-                        <span className="check-icon">✓</span>
-                        <span>{item}</span>
-                      </li>
+                  <div className="row-tech">
+                    {project.tech.map(tech => (
+                      <span key={tech} className="tag">{tech}</span>
                     ))}
-                  </ul>
+                  </div>
                 </div>
 
-                <div className="project-tech">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="tag">{tech}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
+                {/* Arrow */}
+                <span className="row-arrow" aria-hidden="true">→</span>
+              </motion.article>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
     </section>

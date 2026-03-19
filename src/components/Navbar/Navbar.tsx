@@ -1,82 +1,106 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import LogoMark from '../LogoMark/LogoMark';
 import './Navbar.css';
 
 const SECTION_IDS = ['about', 'skills', 'experience', 'projects', 'education', 'contact'];
 
 export default function Navbar() {
   const { t, toggleLang } = useLanguage();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [active, setActive] = useState('');
+  const [scrolled, setScrolled]   = useState(false);
+  const [menuOpen, setMenuOpen]   = useState(false);
+  const [active, setActive]       = useState('');
 
   const navLinks = [
-    { label: t.nav.about, href: '#about' },
-    { label: t.nav.skills, href: '#skills' },
+    { label: t.nav.about,      href: '#about' },
+    { label: t.nav.skills,     href: '#skills' },
     { label: t.nav.experience, href: '#experience' },
-    { label: t.nav.projects, href: '#projects' },
-    { label: t.nav.education, href: '#education' },
-    { label: t.nav.contact, href: '#contact' },
+    { label: t.nav.projects,   href: '#projects' },
+    { label: t.nav.education,  href: '#education' },
+    { label: t.nav.contact,    href: '#contact' },
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
       for (const id of [...SECTION_IDS].reverse()) {
         const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 120) {
+        if (el && window.scrollY >= el.offsetTop - 140) {
           setActive(`#${id}`);
           break;
         }
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Lock body scroll when mobile menu open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+    <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="nav-inner container">
-        <a href="#" className="nav-logo">
-          <span className="logo-bracket">&lt;</span>
-          <span className="logo-name">MJG</span>
-          <span className="logo-bracket">/&gt;</span>
+
+        <a href="#" className="nav-logo" onClick={() => setMenuOpen(false)} aria-label="Home">
+          <LogoMark size={30} />
         </a>
 
-        <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-          {navLinks.map((link) => (
+        {/* Desktop links */}
+        <ul className="nav-links">
+          {navLinks.map(link => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className={active === link.href ? 'active' : ''}
+                className={`nav-link${active === link.href ? ' active' : ''}`}
+                onClick={() => setActive(link.href)}
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div className="nav-actions">
+          <button className="lang-btn" onClick={toggleLang}>
+            {t.nav.langSwitch}
+          </button>
+          <a href="#contact" className="nav-cta">
+            {t.nav.hireMe}
+          </a>
+          <button
+            className={`hamburger${menuOpen ? ' open' : ''}`}
+            onClick={() => setMenuOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile drawer */}
+      <div className={`mobile-menu${menuOpen ? ' open' : ''}`}>
+        <ul>
+          {navLinks.map(link => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className={`mobile-link${active === link.href ? ' active' : ''}`}
                 onClick={() => { setMenuOpen(false); setActive(link.href); }}
               >
                 {link.label}
               </a>
             </li>
           ))}
-          <li className="nav-controls">
-            <button className="lang-toggle" onClick={toggleLang} aria-label="Switch language">
-              {t.nav.langSwitch}
-            </button>
-            <a href="#contact" className="nav-cta" onClick={() => { setMenuOpen(false); setActive('#contact'); }}>
+          <li>
+            <a href="#contact" className="mobile-cta" onClick={() => setMenuOpen(false)}>
               {t.nav.hireMe}
             </a>
           </li>
         </ul>
-
-        <div className="nav-right-mobile">
-          <button className="lang-toggle lang-toggle-mobile" onClick={toggleLang} aria-label="Switch language">
-            {t.nav.langSwitch}
-          </button>
-          <button
-            className={`hamburger ${menuOpen ? 'open' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span /><span /><span />
-          </button>
-        </div>
       </div>
 
       {menuOpen && <div className="nav-overlay" onClick={() => setMenuOpen(false)} />}

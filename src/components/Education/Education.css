@@ -1,56 +1,61 @@
 .edu-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 56px;
   align-items: start;
 }
 
+/* ── Left: degree + languages ── */
 .edu-left {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
+  border: 1px solid var(--border);
 }
 
 .edu-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
+  padding: 32px;
   display: flex;
-  gap: 20px;
-  transition: border-color var(--transition);
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-primary);
+  transition: background var(--transition);
 }
 
-.edu-card:hover {
-  border-color: rgba(167, 139, 250, 0.2);
-}
+.edu-card:hover { background: var(--bg-card); }
 
-.edu-icon {
-  font-size: 2rem;
-  flex-shrink: 0;
-  line-height: 1;
-  margin-top: 2px;
-}
-
-.edu-degree {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
-
-.edu-school {
-  color: var(--accent-light);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 2px;
+.edu-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .edu-period {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
   color: var(--text-muted);
-  margin-bottom: 16px;
+  letter-spacing: 0.08em;
+}
+
+.edu-school-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.edu-degree {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .edu-highlights {
@@ -58,158 +63,173 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .edu-highlights li {
   display: flex;
-  gap: 10px;
   align-items: flex-start;
-  font-size: 0.85rem;
+  gap: 10px;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-.highlight-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
+.b-arrow {
+  color: var(--accent);
+  font-size: 0.78rem;
   flex-shrink: 0;
-  margin-top: 6px;
+  margin-top: 3px;
 }
 
+/* Languages */
 .languages-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px;
-}
-
-.lang-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
-
-.languages {
+  padding: 28px 32px;
+  background: var(--bg-primary);
+  transition: background var(--transition);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
-.lang-item {
+.languages-card:hover { background: var(--bg-card); }
+
+.lang-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.languages-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 18px;
 }
 
-.lang-header {
+.lang-item { display: flex; flex-direction: column; gap: 8px; }
+
+.lang-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .lang-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-family: var(--font-ui);
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-code {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
 }
 
 .lang-level {
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
   color: var(--text-muted);
-  font-family: 'Fira Code', monospace;
+  letter-spacing: 0.08em;
 }
 
 .lang-track {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
+  height: 2px;
+  background: var(--border);
   overflow: hidden;
 }
 
 .lang-fill {
   height: 100%;
-  width: 0;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  border-radius: 2px;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--accent);
 }
 
-.visible .lang-fill {
-  width: var(--target);
-}
-
-.distinctions-col {
+/* ── Right: distinctions ── */
+.edu-right {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
 }
 
-.distinctions-title {
-  margin-bottom: 4px;
+.edu-right-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 .distinctions-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
 .distinction-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
   display: flex;
-  gap: 14px;
-  transition: all var(--transition);
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.distinction-card:hover {
-  border-color: rgba(167, 139, 250, 0.2);
-  transform: translateX(3px);
+.distinction-card:first-child {
+  border-top: 1px solid var(--border);
 }
 
-.distinction-icon {
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.distinction-title {
-  font-size: 0.9rem;
+.d-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
   font-weight: 700;
+  font-style: italic;
+  color: var(--border-strong);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+  padding-top: 2px;
+  transition: color var(--transition);
+}
+
+.distinction-card:hover .d-num { color: var(--accent); }
+
+.d-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.d-title {
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 3px;
+  line-height: 1.3;
 }
 
-.distinction-subtitle {
-  font-size: 0.78rem;
-  color: var(--accent-light);
-  font-weight: 500;
-  margin-bottom: 6px;
+.d-sub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.distinction-desc {
+.d-desc {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.55;
+  line-height: 1.6;
+  margin-top: 4px;
 }
 
-@media (max-width: 900px) {
-  .edu-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .edu-card {
-    flex-direction: column;
-    gap: 12px;
-  }
+@media (max-width: 860px) {
+  .edu-layout { grid-template-columns: 1fr; gap: 40px; }
 }

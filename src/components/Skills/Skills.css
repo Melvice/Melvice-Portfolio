@@ -1,110 +1,112 @@
-/* ── Header ──────────────────────────────────────────── */
-.skills-header {
-  margin-bottom: 48px;
+.skills-section { overflow: hidden; }
+
+/* ── Marquee ── */
+.marquee-wrap {
+  margin: 0 0 80px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
 }
 
-.fs-domains {
+.marquee-mask {
+  overflow: hidden;
+  padding: 16px 0;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.marquee-mask:first-child { border-bottom: 1px solid var(--border); }
+
+.marquee-track {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 14px;
+  width: max-content;
+  animation: marquee-left 40s linear infinite;
 }
 
-.fs-domain-pill {
-  font-family: 'Fira Code', monospace;
-  font-size: 0.82rem;
+.marquee-track.marquee-rev {
+  animation: marquee-right 32s linear infinite;
+}
+
+.marquee-item {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 500;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
+  white-space: nowrap;
+  padding: 0 6px;
+  letter-spacing: -0.01em;
+  transition: color 0.3s;
 }
 
-.fs-sep {
-  color: var(--accent);
-  margin: 0 4px;
-  opacity: 0.6;
-}
+.marquee-item:hover { color: var(--text-primary); }
 
-/* ── 4-column grid ───────────────────────────────────── */
-.skills-cats {
+.marquee-dot { color: var(--accent); opacity: 0.5; margin: 0 14px; }
+
+/* ── Category grid ── */
+.skills-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 1px;
+  border: 1px solid var(--border);
+  background: var(--border);
 }
 
 .skill-group {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px 20px;
-  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: var(--bg-primary);
+  padding: 28px 24px;
+  transition: background var(--transition);
 }
 
-.skill-group:hover {
-  border-color: rgba(167, 139, 250, 0.25);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.08);
-}
+.skill-group:hover { background: var(--bg-card); }
 
 .skill-group-head {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 16px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
 }
 
-.skill-group-icon {
-  font-size: 1.25rem;
-  line-height: 1;
+.skill-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color var(--transition);
 }
+
+.skill-group:hover .skill-icon { color: var(--accent); }
 
 .skill-group-label {
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-/* ── Tech pills ──────────────────────────────────────── */
-.skill-group-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
+.skill-pills { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .skill-pill {
-  display: inline-block;
-  padding: 5px 11px;
-  border-radius: 999px;
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.04);
+  display: inline-flex;
+  padding: 3px 9px;
+  background: var(--bg-secondary);
   border: 1px solid var(--border);
-  transition: all var(--transition);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-secondary);
   white-space: nowrap;
-  cursor: default;
+  transition: border-color var(--transition), color var(--transition), background var(--transition);
 }
 
 .skill-pill:hover {
-  color: var(--accent-light);
-  border-color: rgba(167, 139, 250, 0.3);
-  background: rgba(124, 58, 237, 0.08);
-  transform: translateY(-1px);
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
 }
 
-/* ── Responsive ──────────────────────────────────────── */
-@media (max-width: 1000px) {
-  .skills-cats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .skills-cats {
-    grid-template-columns: 1fr;
-  }
-}
+@media (max-width: 960px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px) { .skills-grid { grid-template-columns: 1fr; } }
