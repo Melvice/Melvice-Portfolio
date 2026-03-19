@@ -1,9 +1,25 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useLanguage } from '../../contexts/LanguageContext';
 import ChapterHeader from '../ChapterHeader/ChapterHeader';
 import './Education.css';
 
 const VP = { once: true, margin: '-60px' };
+
+function LangBar({ pct, delay }: { pct: number; delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  return (
+    <div ref={ref} className="lang-track">
+      <motion.div
+        className="lang-fill"
+        animate={{ width: inView ? `${pct}%` : '0%' }}
+        transition={{ duration: 1.2, delay, ease: 'easeOut' }}
+        style={{ width: '0%' }}
+      />
+    </div>
+  );
+}
 
 export default function Education() {
   const { t, lang } = useLanguage();
@@ -64,15 +80,7 @@ export default function Education() {
                       </span>
                       <span className="lang-level">{lang.level}</span>
                     </div>
-                    <div className="lang-track">
-                      <motion.div
-                        className="lang-fill"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${lang.pct}%` }}
-                        viewport={VP}
-                        transition={{ duration: 1.2, delay: 0.5 }}
-                      />
-                    </div>
+                    <LangBar pct={lang.pct} delay={0.3} />
                   </div>
                 ))}
               </div>
